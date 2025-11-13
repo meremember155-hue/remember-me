@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تطبيق ذكرني</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      color: #333;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* صفحة الكود */
+    #activation {
+      height: 100vh;
+      background: linear-gradient(to bottom, #ff8c00, #fff);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #activation img {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 80%;
+      border: 2px solid #ff8c00;
+      border-radius: 8px;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #ff8c00;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* صفحة الفيديو */
+    #intro {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* صفحة الأقسام */
+    #sections {
+      display: none;
+      min-height: 100vh;
+      background-color: #fff;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    h2 {
+      color: #ff8c00;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      background-color: #ff8c00;
+      color: white;
+      border-radius: 15px;
+      margin: 15px 0;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: 0.2s;
+    }
+
+    .section:hover {
+      transform: scale(1.02);
+    }
+
+    .section img {
+      width: 60px;
+      height: 60px;
+      margin-left: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- صفحة الكود -->
+  <div id="activation">
+    <img src="nlogo.jpg" alt="شعار التطبيق">
+    <h2>أدخل كود التفعيل</h2>
+    <input type="password" id="codeInput" placeholder="••••••">
+    <button onclick="activate()">تفعيل</button>
+  </div>
+
+  <!-- صفحة الفيديو -->
+  <div id="intro">
+    <video id="introVideo" autoplay muted playsinline>
+      <source src="s.mp4" type="video/mp4">
+      متصفحك لا يدعم تشغيل الفيديو.
+    </video>
+  </div>
+
+  <!-- صفحة الأقسام -->
+  <div id="sections">
+    <h2>اختر قسمك</h2>
+    <div id="sectionsContainer">
+      <div class="section" onclick="goTo('https://example1.com')">
+        <img src="s1.png" alt="القسم 1">
+        <span>2as1</span>
+      </div>
+
+      <div class="section" onclick="goTo('https://2as2-remember-me.netlify.app/')">
+        <img src="s2.png" alt="القسم 2">
+        <span>2as2</span>
+      </div>
+
+      <div class="section" onclick="goTo('https://example3.com')">
+        <img src="s3.png" alt="القسم 3">
+        <span>تسيير و إقتصاد</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const activation = document.getElementById('activation');
+    const intro = document.getElementById('intro');
+    const video = document.getElementById('introVideo');
+    const sections = document.getElementById('sections');
+
+    // تحقق إن كان الكود سبق إدخاله
+    const activated = localStorage.getItem('activated');
+
+    if (activated) {
+      startVideo();
+    }
+
+    function activate() {
+      const code = document.getElementById('codeInput').value.trim();
+      const correctCode = "1234"; // غيّر هذا الكود لما تريده
+
+      if (code === correctCode) {
+        localStorage.setItem('activated', 'true');
+        startVideo();
+      } else {
+        alert("❌ كود غير صحيح");
+      }
+    }
+
+    function startVideo() {
+      activation.style.display = 'none';
+      intro.style.display = 'flex';
+      video.play();
+
+      video.addEventListener('ended', () => {
+        intro.style.display = 'none';
+        sections.style.display = 'block';
+      });
+    }
+
+    function goTo(url) {
+      window.location.href = url;
+    }
+  </script>
+
+</body>
+</html>
